@@ -13,7 +13,7 @@ public class BulletShooter : MonoBehaviour
 
     private void Awake()
     {
-        if (!TryGetComponent<BulletCreator>(out _bulletCreator))
+        if (TryGetComponent(out _bulletCreator) == false)
             return;
 
         _waitForSeconds = new WaitForSeconds(_shootDelay);
@@ -39,9 +39,7 @@ public class BulletShooter : MonoBehaviour
         {
             Vector3 directionToTarget = (_target.position - transform.position).normalized;
             Bullet bullet = _bulletCreator.Create(transform.position, directionToTarget);
-
-            if (bullet != null)
-                bullet.Shoot(directionToTarget, _speed);
+            bullet.Push(directionToTarget, _speed);
 
             yield return _waitForSeconds;
         }
