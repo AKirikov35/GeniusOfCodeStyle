@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 public class BulletCreator : MonoBehaviour
 {
@@ -9,7 +9,6 @@ public class BulletCreator : MonoBehaviour
         if(_prefab == null)
             return null;
 
-        Bullet bullet = Instantiate(_prefab, position + direction, Quaternion.identity);
-        return bullet;
+        return Instantiate(_prefab, position + direction, Quaternion.identity);
     }
 }
