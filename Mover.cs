@@ -3,22 +3,24 @@ using UnityEngine;
 public class Mover : MonoBehaviour
 {
     [SerializeField] private Transform _route;
+    [SerializeField] private Transform[] _routeWaypoints;
     [SerializeField] private float _speed;
 
-    private Transform[] _routeWaypoints;
     private int _currentWaypoint;
-
-    private void Awake()
-    {
-        _routeWaypoints = new Transform[_route.childCount];
-
-        for (int i = 0; i < _routeWaypoints.Length; i++)
-            _routeWaypoints[i] = _route.GetChild(i).GetComponent<Transform>();
-    }
 
     private void Update()
     {
         Move();
+    }
+
+    [ContextMenu("Refresh Route Waypoints")]
+    private void RefreshRouteWaypoints()
+    {
+        int waypointsCount = _route.childCount;
+        _routeWaypoints = new Transform[waypointsCount];
+
+        for (int i = 0; i < waypointsCount; i++)
+            _routeWaypoints[i] = _route.GetChild(i);
     }
 
     private void Move()
@@ -27,8 +29,8 @@ public class Mover : MonoBehaviour
 
         if (transform.position == target.position)
         {
-            _currentWaypoint = (_currentWaypoint + 1) % _routeWaypoints.Length;
-            Rotate();
+            _currentWaypoint = ++_currentWaypoint % _routeWaypoints.Length;
+            transform.forward = Rotate() - transform.position;
         }
         
         transform.position = Vector3.MoveTowards(transform.position, target.position, _speed * Time.deltaTime);
@@ -36,8 +38,6 @@ public class Mover : MonoBehaviour
 
     private Vector3 Rotate()
     {
-        Vector3 direction = _routeWaypoints[_currentWaypoint].transform.position;
-        transform.forward = direction - transform.position;
-        return direction;
+        return _routeWaypoints[_currentWaypoint].transform.position;
     }
 }
