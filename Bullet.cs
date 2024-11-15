@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 public class Bullet : MonoBehaviour
@@ -10,7 +10,7 @@ public class Bullet : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
     }
 
-    public void Shoot(Vector3 direction, float speed)
+    public void Push(Vector3 direction, float speed)
     {
         _rigidbody.transform.up = direction;
         _rigidbody.velocity = direction * speed;       
