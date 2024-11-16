@@ -6,9 +6,6 @@ public class BulletCreator : MonoBehaviour
 
     public Bullet Create(Vector3 position, Vector3 direction)
     {
-        if(_prefab == null)
-            return null;
-
         return Instantiate(_prefab, position + direction, Quaternion.identity);
     }
 }
