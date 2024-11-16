@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(BulletCreator))]
 public class BulletShooter : MonoBehaviour
 {
     [SerializeField] private Transform _target;
@@ -9,28 +10,16 @@ public class BulletShooter : MonoBehaviour
 
     private BulletCreator _bulletCreator;
     private WaitForSeconds _waitForSeconds;
-    private Coroutine _currentCoroutine;
 
     private void Awake()
     {
-        if (TryGetComponent(out _bulletCreator) == false)
-            return;
-
+        _bulletCreator = GetComponent<BulletCreator>();
         _waitForSeconds = new WaitForSeconds(_shootDelay);
     }
 
     private void Start()
     {
-        _currentCoroutine = StartCoroutine(ShootingWorker());
-    }
-
-    private void StopShooting()
-    {
-        if (_currentCoroutine != null)
-        {
-            StopCoroutine(_currentCoroutine);
-            _currentCoroutine = null;
-        }
+        StartCoroutine(ShootingWorker());
     }
 
     private IEnumerator ShootingWorker()
